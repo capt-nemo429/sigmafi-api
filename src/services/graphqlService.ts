@@ -12,10 +12,7 @@ class GraphQLService {
   }
 
   public async getBalance(addresses: string[]) {
-    const query = gql<
-      { addresses: { balance: AddressBalance }[] },
-      QueryAddressesArgs
-    >`
+    const query = gql<{ addresses: { balance: AddressBalance }[] }, QueryAddressesArgs>`
       query balances($addresses: [String!]!) {
         addresses(addresses: $addresses) {
           balance {

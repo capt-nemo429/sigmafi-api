@@ -48,8 +48,7 @@ const HI_LIQUIDITY_ASSETS = [
 // https://api.spectrum.fi/v1/docs
 const BASE_COINGECKO_URI = "https://api.coingecko.com/api/";
 const BASE_SPECTRUM_URL = "https://api.spectrum.fi";
-const SPECTRUM_ERG_TOKEN_ID =
-  "0000000000000000000000000000000000000000000000000000000000000000";
+const SPECTRUM_ERG_TOKEN_ID = "0000000000000000000000000000000000000000000000000000000000000000";
 
 class PricingService {
   public async getTokenRates(): Promise<AssetPriceRate> {
@@ -58,24 +57,17 @@ class PricingService {
 
     const [ergPrice, data] = await Promise.all([
       this.getErgPrice(),
-      get<SpectrumPool[]>(
-        new URL("v1/price-tracking/markets", BASE_SPECTRUM_URL),
-        {
-          from: this._getUtcTimestamp(fromDate),
-          to: this._getUtcTimestamp(new Date()),
-        }
-      ),
+      get<SpectrumPool[]>(new URL("v1/price-tracking/markets", BASE_SPECTRUM_URL), {
+        from: this._getUtcTimestamp(fromDate),
+        to: this._getUtcTimestamp(new Date()),
+      }),
     ]);
 
     const filtered = uniqWith(
       data.filter(
-        (x) =>
-          x.baseId === SPECTRUM_ERG_TOKEN_ID &&
-          HI_LIQUIDITY_ASSETS.includes(x.quoteId)
+        (x) => x.baseId === SPECTRUM_ERG_TOKEN_ID && HI_LIQUIDITY_ASSETS.includes(x.quoteId)
       ),
-      (a, b) =>
-        a.quoteId === b.quoteId &&
-        BigNumber(a.baseVolume.value).lt(b.baseVolume.value)
+      (a, b) => a.quoteId === b.quoteId && BigNumber(a.baseVolume.value).lt(b.baseVolume.value)
     );
 
     const dict = toDict(filtered, (r) => {
@@ -109,8 +101,7 @@ class PricingService {
       date.getUTCMonth(),
       date.getUTCDate(),
       date.getUTCHours(),
-      date.getUTCMinutes(),
-      date.getUTCSeconds()
+      date.getUTCMinutes()
     );
   }
 }

@@ -3,7 +3,7 @@ import { AssetPriceRate, pricingService } from "@/services/pricingService";
 import { AddressBalance } from "@ergo-graphql/types";
 import BigNumber from "bignumber.js";
 import { isEmpty } from "lodash-es";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
 const ERG_DECIMALS = 9;
 const TRACKED_ADDRESSES = [
